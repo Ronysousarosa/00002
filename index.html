@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolão da Lotofácil Entre Amigos - Versão Completa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #3399ff;
+            --accent-color: #cce5ff;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding-bottom: 50px;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border: none;
+        }
+        
+        .card-header {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .numero-bolinha {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            text-align: center;
+            line-height: 40px;
+            margin: 3px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .numero-bolinha.selecionado {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .numero-bolinha.acertado {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .ranking-item {
+            border-left: 5px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .ranking-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+        
+        .ranking-item.primeiro {
+            border-left-color: gold;
+        }
+        
+        .ranking-item.segundo {
+            border-left-color: silver;
+        }
+        
+        .ranking-item.terceiro {
+            border-left-color: #cd7f32;
+        }
+        
+        .alert-ganhadores {
+            background-color: var(--success-color);
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .badge-pontos {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .badge-bilhete {
+            background-color: var(--warning-color);
+            color: white;
+            font-size: 14px;
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+        
+        .tabela-jogos {
+            font-size: 14px;
+        }
+        
+        .tabela-jogos td {
+            vertical-align: middle;
+        }
+        
+        .numero-pequeno {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            text-align: center;
+            line-height: 30px;
+            margin: 2px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .ranking-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .estatisticas-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+        
+        .estatistica-item {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .estatistica-item h5 {
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        .estatistica-item p {
+            margin: 5px 0 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .tab-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .grafico-container {
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        
+        .concurso-info {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .concurso-info p {
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        .concurso-info strong {
+            color: var(--primary-color);
+        }
+        
+        .status-atualizacao {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .status-atualizacao.atualizando {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-atualizacao.sucesso {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-atualizacao.erro {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .btn-atualizar-auto {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        
+        .btn-atualizar-auto:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+        
+        .placar-bolao {
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .placar-bolao h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .placar-bolao p {
+            margin: 5px 0 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .badge-pendentes {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 3px 6px;
+            font-size: 12px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+        
+        .whatsapp-info {
+            background-color: #25D366;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .btn-excluir {
+            padding: 2px 5px;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .numero-bolinha {
+                width: 35px;
+                height: 35px;
+                line-height: 35px;
+                margin: 2px;
+                font-size: 14px;
+            }
+            
+            .numero-pequeno {
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                font-size: 11px;
+            }
+            
+            .tabela-jogos {
+                font-size: 12px;
+            }
+            
+            .estatisticas-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="bi bi-people-fill me-2"></i>Bolão da Lotofácil Entre Amigos</h1>
+                    <p class="mb-0">Organize seus jogos, acompanhe resultados e veja o ranking dos participantes</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <button class="btn btn-warning me-2" id="btnConfiguracoes">
+                        <i class="bi bi-gear-fill me-1"></i> Configurações
+                    </button>
+                    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalSobre">
+                        <i class="bi bi-info-circle me-1"></i> Sobre o Bolão
+                    </button>
+                </div>
+            </div>
+            <div class="placar-bolao mt-3">
+                <h3>Valor Total do Bolão</h3>
+                <p id="valorTotalBolao">R$ 0.00</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="alert-ganhadores mb-4">
+            <i class="bi bi-trophy-fill me-2"></i> ATENÇÃO! JÁ TEMOS GANHADORES COM 10 PONTOS!
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-list-ol me-2"></i>Ranking dos Participantes</span>
+                            <div>
+                                <button class="btn btn-sm btn-light me-2" id="btnFiltrar">
+                                    <i class="bi bi-funnel me-1"></i> Filtrar
+                                </button>
+                                <button class="btn btn-sm btn-light" id="btnAtualizar">
+                                    <i class="bi bi-arrow-clockwise me-1"></i> Atualizar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="ranking-header">
+                            <div class="row">
+                                <div class="col-md-4">Total de Participantes: <span id="totalParticipantes">74</span></div>
+                                <div class="col-md-4">Maior Pontuação: <span id="maiorPontuacao">10</span></div>
+                                <div class="col-md-4">Ganhadores: <span id="totalGanhadores">1</span></div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">#</th>
+                                        <th width="20%">Participante</th>
+                                        <th width="15%">Telefone</th>
+                                        <th width="10%" class="text-center">Bilhete</th>
+                                        <th width="30%">Dezenas</th>
+                                        <th width="10%" class="text-center">Pontos</th>
+                                        <th width="10%" class="text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rankingBody">
+                                    <!-- Preenchido via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="bi bi-graph-up me-2"></i>Estatísticas e Análises
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="estatisticasTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="frequencia-tab" data-bs-toggle="tab" data-bs-target="#frequencia" type="button" role="tab" aria-controls="frequencia" aria-selected="true">Frequência</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pontuacao-tab" data-bs-toggle="tab" data-bs-target="#pontuacao" type="button" role="tab" aria-controls="pontuacao" aria-selected="false">Pontuação</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="historico-tab" data-bs-toggle="tab" data-bs-target="#historico" type="button" role="tab" aria-controls="historico" aria-selected="false">Histórico</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="estatisticasTabsContent">
+                            <div class="tab-pane fade show active" id="frequencia" role="tabpanel" aria-labelledby="frequencia-tab">
+                                <h5 class="mb-3">Frequência das Dezenas</h5>
+                                <div id="graficoFrequencia" class="grafico-container"></div>
+                                <div class="estatisticas-grid">
+                                    <div class="estatistica-item">
+                                        <h5>Mais Frequente</h5>
+                                        <p id="numeroMaisFrequente">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Menos Frequente</h5>
+                                        <p id="numeroMenosFrequente">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Média de Acertos</h5>
+                                        <p id="mediaAcertos">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Dezenas Mais Escolhidas</h5>
+                                        <p id="dezenasMaisEscolhidas">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Dezenas Menos Escolhidas</h5>
+                                        <p id="dezenasMenosEscolhidas">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pontuacao" role="tabpanel" aria-labelledby="pontuacao-tab">
+                                <h5 class="mb-3">Distribuição de Pontuação</h5>
+                                <div id="graficoPontuacao" class="grafico-container"></div>
+                                <div class="estatisticas-grid">
+                                    <div class="estatistica-item">
+                                        <h5>Pontuação Média</h5>
+                                        <p id="pontuacaoMedia">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Participantes com 10+ pontos</h5>
+                                        <p id="participantes10Mais">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Participantes com 0 pontos</h5>
+                                        <p id="participantes0Pontos">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Maior Sequência de Acertos</h5>
+                                        <p id="maiorSequencia">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Menor Sequência de Acertos</h5>
+                                        <p id="menorSequencia">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="historico" role="tabpanel" aria-labelledby="historico-tab">
+                                <h5 class="mb-3">Histórico de Resultados</h5>
+                                <div id="graficoHistorico" class="grafico-container"></div>
+                                <div class="estatisticas-grid">
+                                    <div class="estatistica-item">
+                                        <h5>Total de Concursos</h5>
+                                        <p id="totalConcursos">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Média de Pontos por Concurso</h5>
+                                        <p id="mediaPontosConcurso">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Melhor Concurso</h5>
+                                        <p id="melhorConcurso">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Pior Concurso</h5>
+                                        <p id="piorConcurso">--</p>
+                                    </div>
+                                    <div class="estatistica-item">
+                                        <h5>Tendência</h5>
+                                        <p id="tendencia">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="bi bi-card-list me-2"></i>Todos os Jogos
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0 tabela-jogos">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">#</th>
+                                        <th width="25%">Participante</th>
+                                        <th width="10%">Bilhete</th>
+                                        <th width="50%">Dezenas</th>
+                                        <th width="10%" class="text-center">Pontos</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="jogosBody">
+                                    <!-- Preenchido via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="bi bi-check-circle me-2"></i>Último Resultado
+                    </div>
+                    <div class="card-body">
+                        <div class="concurso-info">
+                            <p><strong>Concurso:</strong> <span id="numeroConcurso">2500</span></p>
+                            <p><strong>Data:</strong> <span id="dataConcurso">09/06/2025</span></p>
+                            <p><strong>Total de Dezenas:</strong> <span id="totalDezenas">15</span></p>
+                        </div>
+                        <div id="resultadoDezenas" class="text-center mb-3">
+                            <!-- Preenchido via JavaScript -->
+                        </div>
+                        <div id="statusAtualizacao" class="status-atualizacao"></div>
+                        <button class="btn btn-info w-100 mt-2 btn-atualizar-auto">
+                            <i class="bi bi-cloud-download me-1"></i> Buscar Resultado Oficial
+                        </button>
+                        <button class="btn btn-outline-secondary w-100 mt-2" data-bs-toggle="modal" data-bs-target="#modalResultado">
+                            <i class="bi bi-pencil-square me-1"></i> Atualizar Resultado Manualmente
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="bi bi-person-plus me-2"></i>Adicionar Participante
+                    </div>
+                    <div class="card-body">
+                        <div class="whatsapp-info">
+                            <i class="bi bi-whatsapp me-1"></i> Os palpites serão enviados automaticamente para o WhatsApp do administrador: +55 (64) 98169-6782
+                        </div>
+                        <form id="formNovoParticipante">
+                            <div class="mb-3">
+                                <label for="nomeParticipante" class="form-label">Nome</label>
+                                <input type="text" class="form-control" id="nomeParticipante" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefoneParticipante" class="form-label">Telefone (opcional)</label>
+                                <input type="text" class="form-control" id="telefoneParticipante">
+                            </div>
+                            <div class="mb-3">
+                                <label for="bilheteParticipante" class="form-label">Número do Bilhete (opcional)</label>
+                                <input type="text" class="form-control" id="bilheteParticipante">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Escolha 10 dezenas (01 a 25)</label>
+                                <div id="selecaoDezenas" class="text-center mb-2">
+                                    <!-- Preenchido via JavaScript -->
+                                </div>
+                                <p class="text-center" id="contadorDezenas">0/10 dezenas selecionadas</p>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-save me-1"></i> Salvar Participante
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="bi bi-gear me-2"></i>Opções
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" id="btnExportar">
+                                <i class="bi bi-download me-1"></i> Exportar Dados
+                            </button>
+                            <button class="btn btn-outline-primary" id="btnImportar">
+                                <i class="bi bi-upload me-1"></i> Importar Dados
+                            </button>
+                            <button class="btn btn-outline-success" id="btnRelatorio">
+                                <i class="bi bi-file-earmark-text me-1"></i> Gerar Relatório
+                            </button>
+                            <button class="btn btn-outline-danger" id="btnLimpar">
+                                <i class="bi bi-trash me-1"></i> Limpar Todos os Dados
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Filtro -->
+    <div class="modal fade" id="modalFiltrar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-funnel me-1"></i> Filtrar Participantes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="filtroNome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="filtroNome">
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="filtroPontuacaoMin" class="form-label">Pontuação Mínima</label>
+                            <input type="number" class="form-control" id="filtroPontuacaoMin" min="0" max="10">
+                        </div>
+                        <div class="col">
+                            <label for="filtroPontuacaoMax" class="form-label">Pontuação Máxima</label>
+                            <input type="number" class="form-control" id="filtroPontuacaoMax" min="0" max="10">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="filtroBilhete" class="form-label">Bilhete</label>
+                        <input type="text" class="form-control" id="filtroBilhete">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnAplicarFiltro">Aplicar Filtro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Resultado -->
+    <div class="modal fade" id="modalResultado" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-pencil-square me-1"></i> Atualizar Resultado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formResultado">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="inputConcurso" class="form-label">Número do Concurso</label>
+                                <input type="number" class="form-control" id="inputConcurso" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputDataConcurso" class="form-label">Data do Concurso</label>
+                                <input type="date" class="form-control" id="inputDataConcurso" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Selecione as 15 dezenas sorteadas</label>
+                            <div id="selecaoResultado" class="text-center mb-2">
+                                <!-- Preenchido via JavaScript -->
+                            </div>
+                            <p class="text-center" id="contadorResultado">0/15 dezenas selecionadas</p>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Salvar Resultado</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Importação -->
+    <div class="modal fade" id="modalImportar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-upload me-1"></i> Importar Dados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="inputImportar" class="form-label">Cole os dados JSON abaixo</label>
+                        <textarea class="form-control" id="inputImportar" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmarImportar">Importar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Relatório -->
+    <div class="modal fade" id="modalRelatorio" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-file-earmark-text me-1"></i> Gerar Relatório</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Relatório</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoRelatorio" id="tipoCompleto" value="completo" checked>
+                            <label class="form-check-label" for="tipoCompleto">
+                                Relatório Completo
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoRelatorio" id="tipoRanking" value="ranking">
+                            <label class="form-check-label" for="tipoRanking">
+                                Apenas Ranking
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipoRelatorio" id="tipoEstatisticas" value="estatisticas">
+                            <label class="form-check-label" for="tipoEstatisticas">
+                                Apenas Estatísticas
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Formato</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="formatoRelatorio" id="formatoPDF" value="pdf" checked>
+                            <label class="form-check-label" for="formatoPDF">
+                                PDF
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="formatoRelatorio" id="formatoCSV" value="csv">
+                            <label class="form-check-label" for="formatoCSV">
+                                CSV (Excel)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tituloRelatorio" class="form-label">Título do Relatório</label>
+                        <input type="text" class="form-control" id="tituloRelatorio" value="Bolão da Lotofácil - Relatório">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGerarRelatorio">Gerar Relatório</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Configurações -->
+    <div class="modal fade" id="modalConfiguracoes" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-gear-fill me-1"></i> Configurações do Bolão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="valorPalpite" class="form-label">Valor do Palpite (R$)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">R$</span>
+                            <input type="number" class="form-control" id="valorPalpite" min="1" step="0.5" value="5">
+                        </div>
+                        <small class="form-text text-muted">Este valor será usado para calcular o valor total do bolão.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnSalvarConfiguracoes">Salvar Configurações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Sobre -->
+    <div class="modal fade" id="modalSobre" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-info-circle me-1"></i> Sobre o Bolão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-center mb-3">Bolão da Lotofácil Entre Amigos</h4>
+                    <p>Este sistema permite organizar um bolão da Lotofácil entre amigos, com as seguintes características:</p>
+                    <ul>
+                        <li>Cada participante escolhe 10 dezenas (de 01 a 25)</li>
+                        <li>O valor de cada palpite é configurável pelo administrador</li>
+                        <li>O resultado oficial é obtido do site da Caixa Econômica Federal</li>
+                        <li>A pontuação é calculada com base nos acertos de cada participante</li>
+                        <li>O ranking é atualizado automaticamente após cada resultado</li>
+                        <li>Todos os palpites são enviados para o WhatsApp do administrador</li>
+                        <li>O administrador pode excluir participantes que não pagaram</li>
+                    </ul>
+                    <p class="mb-0">Desenvolvido por Manus AI - Versão 5.0</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script src="whatsapp_integration.js"></script>
+    <script src="autenticacao.js"></script>
+</body>
+</html>
+
+    <script src="script.js"></script>
+    <script src="autenticacao.js"></script>
+    <script src="whatsapp_integration.js"></script>
+</body>
+</html>

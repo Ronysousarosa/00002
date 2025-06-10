@@ -1,0 +1,28 @@
+2025-06-09 15:24:39,883 - LotofacilScraper - INFO - Tentando obter resultado via API
+2025-06-09 15:24:40,253 - LotofacilScraper - WARNING - Falha ao acessar a API: Status code 403
+2025-06-09 15:24:42,253 - LotofacilScraper - INFO - Tentando obter resultado via API
+2025-06-09 15:24:42,524 - LotofacilScraper - WARNING - Falha ao acessar a API: Status code 403
+2025-06-09 15:24:44,524 - LotofacilScraper - INFO - Tentando obter resultado via API
+2025-06-09 15:24:44,605 - LotofacilScraper - WARNING - Falha ao acessar a API: Status code 403
+2025-06-09 15:24:46,606 - LotofacilScraper - INFO - Tentando obter resultado via requests
+2025-06-09 15:24:46,808 - LotofacilScraper - WARNING - Falha ao acessar o site: Status code 403
+2025-06-09 15:24:48,808 - LotofacilScraper - INFO - Tentando obter resultado via requests
+2025-06-09 15:24:49,066 - LotofacilScraper - WARNING - Falha ao acessar o site: Status code 403
+2025-06-09 15:24:51,067 - LotofacilScraper - INFO - Tentando obter resultado via requests
+2025-06-09 15:24:51,389 - LotofacilScraper - WARNING - Falha ao acessar o site: Status code 403
+2025-06-09 15:24:53,390 - LotofacilScraper - INFO - Tentando obter resultado via Playwright
+2025-06-09 15:25:32,452 - LotofacilScraper - ERROR - Erro ao obter resultado via Playwright: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator(".title-bar h2") to be visible
+
+2025-06-09 15:25:34,452 - LotofacilScraper - INFO - Tentando obter resultado via Playwright
+2025-06-09 15:26:05,227 - LotofacilScraper - ERROR - Erro ao obter resultado via Playwright: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator(".title-bar h2") to be visible
+
+2025-06-09 15:26:07,228 - LotofacilScraper - INFO - Tentando obter resultado via Playwright
+2025-06-09 15:26:38,072 - LotofacilScraper - ERROR - Erro ao obter resultado via Playwright: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator(".title-bar h2") to be visible
+
+2025-06-09 15:26:40,072 - LotofacilScraper - ERROR - Todos os métodos falharam ao tentar obter o resultado
